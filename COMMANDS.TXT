@@ -1,0 +1,55 @@
+docker compose exec web python manage.py shell
+
+>>> from app.models import Transaction
+>>> Transaction.objects.count()
+>>> Transaction.objects.filter(isFraud=True).count()
+>>> Transaction.objects.order_by('-amount')[:10]
+
+
+sudo docker compose exec web python -u n2v_gcn_paysim_memsafe.py   --nodes /data/node_features.csv   --edges /data/edge_features.csv   --id-col account   --undirected   --tx-file /data/transactions_with_graph_features.parquet   --epochs-n2v 0 --epochs-gcn 120   --use-focal --gamma 2.0 --alpha 0.25   --neg-pos-ratio 5   --train-batch-size 8192   --eval-batch-size 50000   --val-every 1   --val-max-neg 50000   --test-max-neg 100000   --amp
+sudo docker compose exec web python -u n2v_gcn_paysim_memsafe.py   --nodes /data/node_features.csv   --edges /data/edge_features.csv   --id-col account   --undirected   --tx-file /data/transactions_with_graph_features.parquet   --epochs-n2v 30 --epochs-gcn 120   --use-focal --gamma 2.0 --alpha 0.25   --neg-pos-ratio 5   --train-batch-size 8192   --eval-batch-size 50000   --val-every 1   --val-max-neg 50000   --test-max-neg 100000   --amp
+
+
+sudo docker compose exec web python -u n2v_gcn_paysim_memsafe.py --nodes /data/node_features.csv --edges /data/edge_features.csv --id-col account --tx-file /data/transactions_with_graph_features.parquet --epochs-n2v 30 --epochs-gcn 120 --use-focal --gamma 2.0 --alpha 0.25 --neg-pos-ratio 5 --train-batch-size 8192 --eval-batch-size 50000 --val-every 1 --val-max-neg 50000 --test-max-neg 100000 --amp
+
+sudo docker compose exec web python -u n2v_gcn_repro_article.py --nodes /data/node_features.csv --edges /data/edge_features.csv --id-col account --tx-file /data/transactions_with_graph_features.parquet --epochs-n2v 30 --epochs-gcn 120 --use-focal --gamma 2.0 --alpha 0.25 --neg-pos-ratio 5 --train-batch-size 8192 --eval-batch-size 50000 --val-every 1 --val-max-neg 50000 --test-max-neg 100000 --amp
+
+sudo docker compose exec web python -u n2v_gcn_repro_article.py \
+  --nodes /data/node_features.csv \
+  --edges /data/edge_features.csv \
+  --id-col account \
+  --undirected \
+  --tx-file /data/transactions_with_graph_features.parquet \
+  --epochs-n2v 30 \
+  --epochs-gcn 120 \
+  --neg-pos-ratio 1.0 \
+  --emb-dim 128 \
+  --walk-length 32 \
+  --num-walks 15 \
+  --lr-n2v 0.01 \
+  --lr-gcn 0.002 \
+  --wd-gcn 0.0005 \
+  --far-caps 0.2 0.1 \
+  --eval-batch-size 50000 \
+  --device cuda
+
+
+
+sudo docker compose exec web python -u n2v_gcn_repro_article.py \
+  --nodes /data/node_features.csv \
+  --edges /data/edge_features.csv \
+  --id-col account \
+  --undirected \
+  --tx-file /data/transactions_with_graph_features.parquet \
+  --epochs-n2v 30 \
+  --epochs-gcn 120 \
+  --neg-pos-ratio 1.0 \
+  --emb-dim 128 \
+  --walk-length 32 \
+  --num-walks 15 \
+  --lr-n2v 0.01 \
+  --lr-gcn 0.002 \
+  --wd-gcn 0.0005 \
+  --far-caps 0.2 0.1 \
+  --eval-batch-size 50000 \
+  --device cpu

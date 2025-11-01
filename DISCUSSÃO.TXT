@@ -1,0 +1,8 @@
+Modificar os gráficos para partirem a partir do zero
+
+Explicar melhor o FAR e as implicações dos valores do FAR
+
+Recall@FAR≤ α: recall obtido sob uma taxa máxima de falsos alarmes (FAR) igual
+a α ∈ {0.01, 0.05, 0.10}.
+
+Como as bases de dados do PaySim são semelhantes aos dados de pesquisa utilizados?

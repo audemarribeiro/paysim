@@ -1,0 +1,12 @@
+Django>=4.2
+djangorestframework
+psycopg2-binary
+gunicorn
+pandas
+neo4j
+celery[redis]
+numpy==1.26.4
+scipy==1.13.1
+networkx==3.2.1
+tqdm==4.66.4
+fastparquet==2024.5.0

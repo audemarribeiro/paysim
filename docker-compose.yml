@@ -1,0 +1,59 @@
+# docker-compose.yml
+version: "3.8"
+
+services:
+  paysim:
+    build:
+      context: ./paysim
+    container_name: paysim
+    restart: "no"
+    volumes:
+      - paysim-data:/data
+    environment:
+      - PAYSIM_PROPERTIES=/opt/paysim/paramFiles/PaySim.properties
+      - PAYSIM_OUTPUT=/data/transactions.csv
+    # deixa o paysim terminar após gerar CSV (entrypoint já o faz)
+    # se quiser rodar multiple runs, configure restart: "on-failure" ou use command override
+
+  postgres:
+    image: postgres:15
+    container_name: paysim_postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-paysimdb}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build:
+      context: ./web
+    container_name: paysim_web
+    depends_on:
+      - postgres
+      - paysim
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./web:/app:cached
+      - paysim-data:/data:rw           # lê CSV gerado pelo paysim
+      - ./data:/data
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=${POSTGRES_DB:-paysimdb}
+      - DATABASE_USER=${POSTGRES_USER:-postgres}
+      - DATABASE_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - PAYSIM_OUTPUT=/data/transactions.csv
+    restart: unless-stopped
+
+volumes:
+  paysim-data:
+  pgdata:

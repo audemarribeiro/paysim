@@ -1,0 +1,214 @@
+audemar@audemar-550XDA:~/Documentos/Code/paysim-django$ sudo docker compose exec web python -u n2v_gcn_repro_article_memsafe.py \
+  --nodes /data/node_features.csv \
+  --edges /data/edge_features.csv \
+  --tx-file /data/transactions_with_graph_features.parquet \
+  --epochs-n2v 30 --emb-dim 128 --walk-length 32 --num-walks 15 \
+  --epochs-gcn 120 --lr-gcn 0.002 --wd-gcn 0.0005 \
+  --neg-pos-ratio 1.0 \
+  --n2v-save /data/n2v_emb_train.npy \
+  --model-save /data/gcn_model.pt \
+  --device cpu
+[sudo] senha para audemar: 
+WARN[0000] /home/audemar/Documentos/Code/paysim-django/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+>> Carregando dados (nós/arestas)...
+Grafo: N=55569 | E(graph)=3243702 | E(classif)=3243702 | Pos=1508
+
+>> Treinando Node2Vec...
+[Node2Vec] Época 01/30 | Loss: 2730.4127
+[Node2Vec] Época 02/30 | Loss: 2064.6558
+[Node2Vec] Época 04/30 | Loss: 1279.6606
+[Node2Vec] Época 06/30 | Loss: 859.4947
+[Node2Vec] Época 08/30 | Loss: 626.0778
+[Node2Vec] Época 10/30 | Loss: 503.3136
+[Node2Vec] Época 12/30 | Loss: 443.8361
+[Node2Vec] Época 14/30 | Loss: 416.4312
+[Node2Vec] Época 16/30 | Loss: 403.7917
+[Node2Vec] Época 18/30 | Loss: 398.3558
+[Node2Vec] Época 20/30 | Loss: 396.9823
+[Node2Vec] Época 22/30 | Loss: 397.5202
+[Node2Vec] Época 24/30 | Loss: 398.8113
+[Node2Vec] Época 26/30 | Loss: 400.0740
+[Node2Vec] Época 28/30 | Loss: 401.3186
+[Node2Vec] Época 30/30 | Loss: 401.4291
+
+>> Gerando splits (treino/val/test) ...
+Split: estratificado (default)
+Treino (neg:pos=1.0): 2110 | Val: 324371 | Teste: 648741
+
+>> Treinando Node2Vec...
+[Node2Vec] Época 01/30 | Loss: 2727.5450
+[Node2Vec] Época 02/30 | Loss: 2062.1605
+[Node2Vec] Época 04/30 | Loss: 1279.9338
+[Node2Vec] Época 06/30 | Loss: 858.0185
+[Node2Vec] Época 08/30 | Loss: 625.2902
+[Node2Vec] Época 10/30 | Loss: 503.1231
+[Node2Vec] Época 12/30 | Loss: 443.5594
+[Node2Vec] Época 14/30 | Loss: 416.1101
+[Node2Vec] Época 16/30 | Loss: 403.6882
+[Node2Vec] Época 18/30 | Loss: 398.4247
+[Node2Vec] Época 20/30 | Loss: 396.9846
+[Node2Vec] Época 22/30 | Loss: 397.5452
+[Node2Vec] Época 24/30 | Loss: 399.1006
+[Node2Vec] Época 26/30 | Loss: 400.1185
+[Node2Vec] Época 28/30 | Loss: 401.1028
+[Node2Vec] Época 30/30 | Loss: 401.3935
+>> N2V salvo em /data/n2v_emb_train.npy
+
+>> Treinando GCN (2 camadas, 16 filtros) + head de aresta...
+[GCN] Ép 001/120 | TrainLoss(sum): 0.7144 | Val PR-AUC: 0.0022 | Val ROC-AUC: 0.7416 | pos_weight=None
+[GCN] Ép 002/120 | TrainLoss(sum): 0.6977 | Val PR-AUC: 0.0042 | Val ROC-AUC: 0.8518 | pos_weight=None
+[GCN] Ép 004/120 | TrainLoss(sum): 0.6713 | Val PR-AUC: 0.0461 | Val ROC-AUC: 0.8849 | pos_weight=None
+[GCN] Ép 006/120 | TrainLoss(sum): 0.6489 | Val PR-AUC: 0.2224 | Val ROC-AUC: 0.9289 | pos_weight=None
+[GCN] Ép 008/120 | TrainLoss(sum): 0.6356 | Val PR-AUC: 0.2921 | Val ROC-AUC: 0.9398 | pos_weight=None
+[GCN] Ép 010/120 | TrainLoss(sum): 0.6126 | Val PR-AUC: 0.3106 | Val ROC-AUC: 0.9399 | pos_weight=None
+[GCN] Ép 012/120 | TrainLoss(sum): 0.6051 | Val PR-AUC: 0.3186 | Val ROC-AUC: 0.9398 | pos_weight=None
+[GCN] Ép 014/120 | TrainLoss(sum): 0.5847 | Val PR-AUC: 0.3294 | Val ROC-AUC: 0.9425 | pos_weight=None
+[GCN] Ép 016/120 | TrainLoss(sum): 0.5708 | Val PR-AUC: 0.3383 | Val ROC-AUC: 0.9455 | pos_weight=None
+[GCN] Ép 018/120 | TrainLoss(sum): 0.5598 | Val PR-AUC: 0.3427 | Val ROC-AUC: 0.9486 | pos_weight=None
+[GCN] Ép 020/120 | TrainLoss(sum): 0.5436 | Val PR-AUC: 0.3479 | Val ROC-AUC: 0.9519 | pos_weight=None
+[GCN] Ép 022/120 | TrainLoss(sum): 0.5326 | Val PR-AUC: 0.3517 | Val ROC-AUC: 0.9553 | pos_weight=None
+[GCN] Ép 024/120 | TrainLoss(sum): 0.5093 | Val PR-AUC: 0.3550 | Val ROC-AUC: 0.9580 | pos_weight=None
+[GCN] Ép 026/120 | TrainLoss(sum): 0.5021 | Val PR-AUC: 0.3580 | Val ROC-AUC: 0.9612 | pos_weight=None
+[GCN] Ép 028/120 | TrainLoss(sum): 0.4890 | Val PR-AUC: 0.3658 | Val ROC-AUC: 0.9640 | pos_weight=None
+[GCN] Ép 030/120 | TrainLoss(sum): 0.4643 | Val PR-AUC: 0.3732 | Val ROC-AUC: 0.9663 | pos_weight=None
+[GCN] Ép 032/120 | TrainLoss(sum): 0.4625 | Val PR-AUC: 0.3788 | Val ROC-AUC: 0.9681 | pos_weight=None
+[GCN] Ép 034/120 | TrainLoss(sum): 0.4445 | Val PR-AUC: 0.3833 | Val ROC-AUC: 0.9696 | pos_weight=None
+[GCN] Ép 036/120 | TrainLoss(sum): 0.4237 | Val PR-AUC: 0.3876 | Val ROC-AUC: 0.9708 | pos_weight=None
+[GCN] Ép 038/120 | TrainLoss(sum): 0.3994 | Val PR-AUC: 0.3791 | Val ROC-AUC: 0.9720 | pos_weight=None
+[GCN] Ép 040/120 | TrainLoss(sum): 0.3867 | Val PR-AUC: 0.3481 | Val ROC-AUC: 0.9730 | pos_weight=None
+[GCN] Ép 042/120 | TrainLoss(sum): 0.3863 | Val PR-AUC: 0.3283 | Val ROC-AUC: 0.9739 | pos_weight=None
+[GCN] Ép 044/120 | TrainLoss(sum): 0.3657 | Val PR-AUC: 0.3076 | Val ROC-AUC: 0.9749 | pos_weight=None
+[GCN] Ép 046/120 | TrainLoss(sum): 0.3495 | Val PR-AUC: 0.2561 | Val ROC-AUC: 0.9758 | pos_weight=None
+[GCN] Ép 048/120 | TrainLoss(sum): 0.3152 | Val PR-AUC: 0.2511 | Val ROC-AUC: 0.9769 | pos_weight=None
+[GCN] Ép 050/120 | TrainLoss(sum): 0.3003 | Val PR-AUC: 0.1981 | Val ROC-AUC: 0.9777 | pos_weight=None
+[GCN] Ép 052/120 | TrainLoss(sum): 0.2980 | Val PR-AUC: 0.1365 | Val ROC-AUC: 0.9782 | pos_weight=None
+[GCN] Ép 054/120 | TrainLoss(sum): 0.2795 | Val PR-AUC: 0.1436 | Val ROC-AUC: 0.9796 | pos_weight=None
+[GCN] Ép 056/120 | TrainLoss(sum): 0.2709 | Val PR-AUC: 0.0947 | Val ROC-AUC: 0.9800 | pos_weight=None
+[EarlyStopping] Sem melhora por 10 validações. Parando.
+
+>> Modelo salvo em /data/gcn_model.pt
+
+>> Avaliando no TESTE...
+[TEST] PR-AUC: 0.3227 | ROC-AUC: 0.9546
+[TEST] Recall@FAR<=0.20: Recall=0.9338 @ thr=0.17 (FAR=0.1781)
+[TEST] Recall@FAR<=0.10: Recall=0.9040 @ thr=0.22 (FAR=0.0904)
+
+=== Threshold Sweep (0.30–0.40) (0.30–0.40) ===
+thr	Recall	FAR
+0.30	0.8444	0.0358
+0.31	0.8411	0.0329
+0.32	0.8377	0.0301
+0.33	0.8278	0.0277
+0.34	0.8212	0.0257
+0.35	0.8113	0.0240
+0.36	0.7980	0.0223
+0.37	0.7980	0.0207
+0.38	0.7947	0.0193
+0.39	0.7914	0.0180
+0.40	0.7881	0.0169
+
+=== Threshold Sweep (0.00–1.00) (0.00–1.00) ===
+thr	Recall	FAR
+0.00	1.0000	1.0000
+0.01	1.0000	1.0000
+0.02	1.0000	1.0000
+0.03	1.0000	1.0000
+0.04	1.0000	1.0000
+0.05	1.0000	0.9976
+0.06	1.0000	0.9655
+0.07	1.0000	0.8907
+0.08	0.9868	0.7822
+0.09	0.9834	0.6748
+0.10	0.9702	0.5743
+0.11	0.9603	0.4888
+0.12	0.9570	0.4120
+0.13	0.9536	0.3427
+0.14	0.9470	0.2867
+0.15	0.9404	0.2421
+0.16	0.9371	0.2061
+0.17	0.9338	0.1781
+0.18	0.9272	0.1539
+0.19	0.9205	0.1340
+0.20	0.9205	0.1172
+0.21	0.9139	0.1025
+0.22	0.9040	0.0904
+0.23	0.8940	0.0792
+0.24	0.8808	0.0691
+0.25	0.8709	0.0606
+0.26	0.8675	0.0534
+0.27	0.8609	0.0474
+0.28	0.8609	0.0427
+0.29	0.8510	0.0390
+0.30	0.8444	0.0358
+0.31	0.8411	0.0329
+0.32	0.8377	0.0301
+0.33	0.8278	0.0277
+0.34	0.8212	0.0257
+0.35	0.8113	0.0240
+0.36	0.7980	0.0223
+0.37	0.7980	0.0207
+0.38	0.7947	0.0193
+0.39	0.7914	0.0180
+0.40	0.7881	0.0169
+0.41	0.7848	0.0159
+0.42	0.7815	0.0149
+0.43	0.7748	0.0140
+0.44	0.7682	0.0133
+0.45	0.7682	0.0126
+0.46	0.7583	0.0119
+0.47	0.7517	0.0113
+0.48	0.7517	0.0107
+0.49	0.7450	0.0101
+0.50	0.7450	0.0096
+0.51	0.7384	0.0090
+0.52	0.7351	0.0085
+0.53	0.7351	0.0080
+0.54	0.7252	0.0076
+0.55	0.7152	0.0071
+0.56	0.7020	0.0067
+0.57	0.6954	0.0063
+0.58	0.6954	0.0060
+0.59	0.6887	0.0057
+0.60	0.6854	0.0053
+0.61	0.6755	0.0050
+0.62	0.6722	0.0048
+0.63	0.6623	0.0045
+0.64	0.6623	0.0042
+0.65	0.6523	0.0040
+0.66	0.6457	0.0037
+0.67	0.6391	0.0035
+0.68	0.6358	0.0033
+0.69	0.6291	0.0031
+0.70	0.6291	0.0028
+0.71	0.6291	0.0027
+0.72	0.6192	0.0025
+0.73	0.6159	0.0023
+0.74	0.6060	0.0021
+0.75	0.5927	0.0019
+0.76	0.5828	0.0018
+0.77	0.5629	0.0016
+0.78	0.5397	0.0015
+0.79	0.5132	0.0014
+0.80	0.4934	0.0012
+0.81	0.4503	0.0012
+0.82	0.4371	0.0010
+0.83	0.4073	0.0009
+0.84	0.3940	0.0008
+0.85	0.3841	0.0007
+0.86	0.3775	0.0007
+0.87	0.3675	0.0006
+0.88	0.3609	0.0005
+0.89	0.3576	0.0004
+0.90	0.3510	0.0004
+0.91	0.3477	0.0003
+0.92	0.3477	0.0003
+0.93	0.3477	0.0002
+0.94	0.3444	0.0002
+0.95	0.3377	0.0002
+0.96	0.3278	0.0001
+0.97	0.3113	0.0001
+0.98	0.2715	0.0001
+0.99	0.0762	0.0000
+1.00	0.0000	0.0000
+
+Concluído.
